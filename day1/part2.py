@@ -36,7 +36,7 @@ Of course, your expense report is much larger. Find the two entries that sum to 
 them together?
 =============================================================================================
 
-Your puzzle answer was 910539.
+Your puzzle answer was 618144.
 
 The first half of this puzzle is complete! It provides one gold star: *
 =============================================================================================
@@ -52,7 +52,7 @@ produces the answer, 241861950.
 In your expense report, what is the product of the three entries that sum to 2020?
 =============================================================================================
 
-Your puzzle answer was 116724144.
+Your puzzle answer was 173538720.
 
 Both parts of this puzzle are complete! They provide two gold stars: **
 =============================================================================================
