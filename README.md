@@ -6,7 +6,7 @@ I had debated choosing a different language.  TypeScript, C/C++, C# and Rust wer
 
 ### Goal 🥅
 
-I figured it was better to check out some of the newer features of Python 3 (if possible).  A lot of these puzzles I'll try to be focused on "cranking it out."  As such, certain aspects will get more attention than others.  For example, if a puzzle is *taking a long, long time to process,* the priority will be speed.
+I figured it was better to check out some of the newer features of Python 3 (if possible).  A lot of these puzzles I'll try to be focused on "cranking it out."  As such, certain aspects will get more attention than others.  For example, if a puzzle is taking a long, long time to process, the priority may be **speed**.  If I'm quickly trying to solve a problem, the priority may be **speed** writing.
 
 It will be an interesting time to explore optimizations, suggestions, third-party modules and functions I have been unfamiliar with.  And in conclusion, my goals are to:
 
