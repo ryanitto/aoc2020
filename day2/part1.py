@@ -45,7 +45,7 @@ class Password:
     @staticmethod
     def parse_line(line: str):
         no_colon_line = line.replace(':', '')
-        split_line =  no_colon_line.split(' ')
+        split_line = no_colon_line.split(' ')
 
         min_key_count, max_key_count = split_line[0].split('-')
         key = split_line[1]
@@ -83,4 +83,3 @@ def solve():
 
 if __name__ == '__main__':
     print(solve())
-
