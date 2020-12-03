@@ -35,13 +35,13 @@ In this list, the two entries that sum to 2020 are 1721 and 299. Multiplying the
 Of course, your expense report is much larger. Find the two entries that sum to 2020; what do you get if you multiply
 them together?
 """
-import input
+import input_
 
 
 def solve():
     results = []
-    file_ = input.get_input_file(__file__)
-    lines = input.get_lines(file_)
+    file_ = input_.get_input_file(__file__)
+    lines = input_.get_lines(file_)
 
     mult = lambda x, y: x * y
     results = [float(i) for i in lines for j in lines if float(i) + float(j) == 2020]

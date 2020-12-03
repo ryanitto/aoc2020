@@ -30,7 +30,7 @@ How many passwords are valid according to their policies?
 
 To begin, get your puzzle input.
 """
-import input
+import input_
 
 
 class Password:
@@ -65,8 +65,8 @@ def valid_password(pw: Password):
 
 
 def solve():
-    file_ = input.get_input_file(__file__)
-    lines = input.get_lines(file_)
+    file_ = input_.get_input_file(__file__)
+    lines = input_.get_lines(file_)
     # lines = [
     #     '1-3 a: abcde',
     #     '1-3 b: cdefg',

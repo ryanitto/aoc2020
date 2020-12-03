@@ -57,14 +57,14 @@ Your puzzle answer was 173538720.
 Both parts of this puzzle are complete! They provide two gold stars: **
 =============================================================================================
 """
-import input
+import input_
 from day1 import part1
 import math     # forgot that it's super simple to just use product function here, lol
 
 
 def solve():
-    file_ = input.get_input_file(part1.__file__)
-    lines = input.get_lines(file_)
+    file_ = input_.get_input_file(part1.__file__)
+    lines = input_.get_lines(file_)
 
     # Eh, this is pretty slow.  3 conditionals!
     results = [float(i) for i in lines for j in lines for k in lines if float(i) + float(j) + float(k) == 2020]
