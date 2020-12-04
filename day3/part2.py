@@ -115,17 +115,30 @@ slopes = [
 ]
 
 
-def traverse(rows, row_step=1, column_step=1):
-    plot = [rows[i][(i * row_step if column_step <= 1 else i // column_step) % len(rows[i])]
-            for i in range(column_step, len(rows), column_step)
-            ]
+def traverse(rows, h_step=1, v_step=1):
+    """
+    So this looks ridiculous.  And it is.  Kinda.
+
+    - Traverse each row; the row that's begun with is determined by how many column steps to take
+    -- if column_step is 2, start the for loop on list index 2
+    - Multiply list index * row steps to take on a string // column steps --> gives a rounded down integer of how
+    far to move right
+    - Iterate each row BY the amount of column steps
+    - Done!  Get that tree count!
+
+    :param rows: (str iterable) strings containing # or . characters
+    :param h_step: (int) "Horizontal step" - how many positions over in a string to traverse
+    :param v_step: (int) "Vertical step" - how many list indexes to traverse from given rows
+    :return: (int) number of trees found
+    """
+    plot = [rows[i][(i * h_step // v_step) % len(rows[i])] for i in range(v_step, len(rows), v_step)]
     return plot.count(TREE_KEY)
 
 
 def solve():
     results = 1
     for s in slopes:
-        results *= traverse(lines, row_step=s[0], column_step=s[1])
+        results *= traverse(lines, h_step=s[0], v_step=s[1])
     return results
 
 
