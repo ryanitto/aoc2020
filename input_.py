@@ -3,10 +3,14 @@ import os
 INPUT_KEY = 'input'
 TXT_SUFFIX = 'txt'
 
-def get_lines(file_):
+
+def get_lines(file_, newlines=False):
     if os.path.isfile(file_) and os.path.exists(file_):
         with open(file_) as f:
-            lines = ''.join(f.readlines()).splitlines()
+            if newlines:
+                lines = f.readlines()
+            else:
+                lines = ''.join(f.readlines()).splitlines()
             return lines
     else:
         print(f'Input file is incorrect! Check file is valid and try again.\n>>>\t{file_}')
