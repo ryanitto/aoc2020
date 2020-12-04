@@ -94,6 +94,10 @@ What do you get if you multiply together the number of trees encountered on each
 
 ===========================
 
+Your puzzle answer was 6419669520.
+
+Both parts of this puzzle are complete! They provide two gold stars: **
+
 """
 import input_
 
@@ -101,20 +105,6 @@ TREE_KEY = '#'
 
 file_ = input_.get_input_file(__file__)
 lines = input_.get_lines(file_)
-
-lines = [
-    '..##.........##.........##.........##.........##.........##.......',
-    '#...#...#..#...#...#..#...#...#..#...#...#..#...#...#..#...#...#..',
-    '.#....#..#..#....#..#..#....#..#..#....#..#..#....#..#..#....#..#.',
-    '..#.#...#.#..#.#...#.#..#.#...#.#..#.#...#.#..#.#...#.#..#.#...#.#',
-    '.#...##..#..#...##..#..#...##..#..#...##..#..#...##..#..#...##..#.',
-    '..#.##.......#.##.......#.##.......#.##.......#.##.......#.##.....',
-    '.#.#.#....#.#.#.#....#.#.#.#....#.#.#.#....#.#.#.#....#.#.#.#....#',
-    '.#........#.#........#.#........#.#........#.#........#.#........#',
-    '#.##...#...#.##...#...#.##...#...#.##...#...#.##...#...#.##...#...',
-    '#...##....##...##....##...##....##...##....##...##....##...##....#',
-    '.#..#...#.#.#..#...#.#.#..#...#.#.#..#...#.#.#..#...#.#.#..#...#.#',
-]
 
 slopes = [
     (1, 1),
@@ -125,19 +115,17 @@ slopes = [
 ]
 
 
-def traverse(rows, row_step, column_step=1):
-    if column_step <= 1:
-        plot = {f'{i + 1}-{divmod(i * row_step, len(l))}': l[i * row_step % len(l)] for i, l in enumerate(rows)}
-    else:
-        plot = {f'{i + 1}-{divmod(i * row_step, len(l))}': l[i * row_step % len(l)] for i, l in enumerate(rows)}
-    return list(plot.values()).count(TREE_KEY)
+def traverse(rows, row_step=1, column_step=1):
+    plot = [rows[i][(i * row_step if column_step <= 1 else i // column_step) % len(rows[i])]
+            for i in range(column_step, len(rows), column_step)
+            ]
+    return plot.count(TREE_KEY)
 
 
 def solve():
     results = 1
     for s in slopes:
-        results *= traverse(lines, s[0], column_step=s[1])
-        print(traverse(lines, s[0], column_step=s[1]))
+        results *= traverse(lines, row_step=s[0], column_step=s[1])
     return results
 
 
