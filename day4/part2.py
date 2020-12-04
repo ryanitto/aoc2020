@@ -158,11 +158,11 @@ class Passport:
     _hair_col = None
     _eye_col = None
     _pid = None
-    cid = 0  # (Country ID)
+    cid = 0  # (Country ID) - ignored, missing or not.
 
     EYE_COLORS = ['amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth']
 
-    # Birth Year
+    # Birth Year - four digits; at least 1920 and at most 2002.
     @property
     def byr(self):
         return self._birth_year
@@ -172,7 +172,7 @@ class Passport:
         if 2002 >= int(value) >= 1920:
             self._birth_year = value
 
-    # Issue Year
+    # Issue Year - four digits; at least 2010 and at most 2020.
     @property
     def iyr(self):
         return self._issue_year
@@ -182,7 +182,7 @@ class Passport:
         if 2020 >= int(value) >= 2010:
             self._issue_year = value
 
-    # Expiration Year
+    # Expiration Year - four digits; at least 2020 and at most 2030.
     @property
     def eyr(self):
         return self._exp_year
@@ -192,7 +192,9 @@ class Passport:
         if 2030 >= int(value) >= 2020:
             self._exp_year = value
 
-    # Height
+    # Height - a number followed by either cm or in:
+    #     If cm, the number must be at least 150 and at most 193.
+    #     If in, the number must be at least 59 and at most 76.
     @property
     def hgt(self):
         return self._height
@@ -204,7 +206,7 @@ class Passport:
         elif value.endswith('in') and 76 >= int(value.rstrip('in')) >= 59:
             self._height = value
 
-    # Hair Color
+    # Hair Color - a # followed by exactly six characters 0-9 or a-f.
     @property
     def hcl(self):
         return self._hair_col
@@ -214,7 +216,7 @@ class Passport:
         if '#' in value and len(value) == 7:
             self._hair_col = value
 
-    # Eye Color
+    # Eye Color - exactly one of: amb blu brn gry grn hzl oth.
     @property
     def ecl(self):
         return self._eye_col
@@ -224,7 +226,7 @@ class Passport:
         if value in self.EYE_COLORS:
             self._eye_col = value
 
-    # Passport ID
+    # Passport ID - a nine-digit number, including leading zeroes.
     @property
     def pid(self):
         return self._pid
@@ -243,10 +245,10 @@ class Passport:
         return False
 
 
-def lines_to_passports(lines: str):
+def lines_to_passports(lines: list):
     """
 
-    :param lines: (str) line of data to parse
+    :param lines: (list) lines of strings to parse
     :return: (list) of Passport objects
     """
     passports = []
