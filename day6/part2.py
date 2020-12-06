@@ -89,6 +89,11 @@ they don't count.
 In this example, the sum of these counts is 3 + 0 + 1 + 1 + 1 = 6.
 
 For each group, count the number of questions to which everyone answered "yes". What is the sum of those counts?
+================================
+
+Your puzzle answer was 3219.
+
+Both parts of this puzzle are complete! They provide two gold stars: **
 
 """
 import input_
@@ -107,19 +112,17 @@ def sums_from_groups(groups):
 
 
 def sum_from_group(group):
-    total = 0
     people_count = len(group)
+    answer_dict = {}
 
     for people in group:
         for answer in people:
+            if answer in answer_dict:
+                answer_dict[answer] += 1
+            else:
+                answer_dict[answer] = 1
 
-
-    # print(set(group))
-
-    # for char in group:
-    #     if char.isalpha():
-    #         total += len(char)
-
+    total = sum([1 for a in answer_dict.values() if a == people_count])
     return total
 
 
