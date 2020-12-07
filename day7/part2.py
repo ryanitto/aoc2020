@@ -95,13 +95,13 @@ lines = input_.get_lines(file_)
 
 
 class Solve(part1.Solve):
-    _bags = []
     count = 0
 
     def __init__(self):
         super(part1.Solve, self).__init__()
 
-    def get_total_bags_from_bag(self, bag):
+    @staticmethod
+    def get_total_bags_from_bag(bag):
         totals = []
 
         def get_totals(bag, subtotals):
