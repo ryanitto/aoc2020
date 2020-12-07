@@ -191,6 +191,13 @@ class Solve:
         return self._bags
 
     def go(self, part_one=False):
+        """
+        Do the solve!  If you want part one, change the keyword to true. :)
+
+        :param part_one: (bool) If True, do the first part of the puzzle
+        :return: (int) result of either puzzle
+        """
+
         self.parse_rules(lines, rule_text=CONTAIN_KEY)
         my_bag = self._bags_to_names[self.my_bag]
 
