@@ -88,17 +88,42 @@ Both parts of this puzzle are complete! They provide two gold stars: **
 
 """
 import input_
-import part1
 
 file_ = input_.get_input_file(__file__)
 lines = input_.get_lines(file_)
 
+BAG_KEY = 'bag'
+CONTAIN_KEY = f'{BAG_KEY}s contain'
+NULL_KEY = f'no other {BAG_KEY}s'
 
-class Solve(part1.Solve):
+
+class Bag:
+    name = ''
+    children = {}
+    parents = []
+
+    def __init__(self, name, children=None):
+        self.name = name
+        if children:
+            self.children = children if any(children) else []
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return f'{self.name}: (Children: {self.children}, Parents: {self.parents})'
+
+
+class Solve:
+    _bags = []
+    _bags_to_names = {}
+
+    my_bag = 'shiny gold'
     count = 0
 
-    def __init__(self):
-        super(part1.Solve, self).__init__()
+    def __init__(self, **kwargs):
+        for k, v in kwargs:
+            setattr(self, k, v) if hasattr(self, k) else None
 
     @staticmethod
     def get_total_bags_from_bag(bag):
@@ -116,11 +141,64 @@ class Solve(part1.Solve):
         totals = get_totals(bag, totals)
         return sum(totals)
 
-    def how_many_children(self):
-        self.parse_rules(lines, rule_text=part1.CONTAIN_KEY)
+    def get_children_from_desc(self, desc):
+        children = {}
+
+        if desc == NULL_KEY:
+            pass
+        else:
+            split_children = desc.split(', ')
+            for c in split_children:
+                child_bag_desc = c.split(' ')[:-1]
+                child_bag_count = child_bag_desc[0]
+                child_bag_name = ' '.join(child_bag_desc[1:])
+                child_bag = self._bags_to_names[child_bag_name]
+                children[child_bag] = child_bag_count
+
+        return children
+
+    def get_parents_for_bag(self, bag):
+        parents = []
+
+        def get_parents(self, parent_bag):
+            for b in self._bags:
+                if parent_bag in b.children:
+                    parents.append(b)
+                    get_parents(self, b)
+
+        get_parents(self, bag)
+        return list(set(parents))
+
+    def parse_rule(self, line, rule_text=''):
+        name, children_desc = [l.strip().replace('.', '') for l in line.split(rule_text)]
+        return name, children_desc
+
+    def parse_rules(self, lines, rule_text=''):
+        parsed = [self.parse_rule(l, rule_text=rule_text) for l in lines]
+        self._bags = [Bag(n[0]) for n in parsed]
+        self._bags_to_names = {b.name: b for b in self._bags}
+
+        for p in parsed:
+            bag, desc = p
+            if bag in self._bags_to_names:
+                # Get children from description, keep count of how many potential children, too
+                children = self.get_children_from_desc(desc)
+
+                # Add children, to this bag
+                bag_object = self._bags_to_names[bag]
+                bag_object.children = children
+
+        return self._bags
+
+    def go(self, part_one=False):
+        self.parse_rules(lines, rule_text=CONTAIN_KEY)
         my_bag = self._bags_to_names[self.my_bag]
-        return self.get_total_bags_from_bag(my_bag)
+
+        if part_one:
+            return len(self.get_parents_for_bag(my_bag))
+        else:
+            return self.get_total_bags_from_bag(my_bag)
 
 
 if __name__ == '__main__':
-    print(Solve().how_many_children())
+    print(Solve().go())
