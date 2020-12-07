@@ -91,9 +91,6 @@ lines = input_.get_lines(file_)
 class Solve(part1.Solve):
     _bags = []
 
-    def __init__(self):
-        super(part1.Solve, self).__init__()
-
     def get_children_for_bag(self, bag):
         children = []
 
@@ -109,7 +106,10 @@ class Solve(part1.Solve):
     def how_many_children(self):
         self.parse_rules(lines, rule_text=part1.CONTAIN_KEY)
         my_bag = self._bags_to_names[self.my_bag]
-        return self.get_children_for_bag(my_bag)
+        # return self.get_children_for_bag(my_bag)
+        for b in self._bags:
+            print(b)
+        return self._bags
 
 
 if __name__ == '__main__':
