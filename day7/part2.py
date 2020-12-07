@@ -80,6 +80,12 @@ In this example, a single shiny gold bag must contain 126 other bags.
 
 How many individual bags are required inside your single shiny gold bag?
 
+========================================
+
+Your puzzle answer was 11261.
+
+Both parts of this puzzle are complete! They provide two gold stars: **
+
 """
 import input_
 import part1
@@ -90,26 +96,30 @@ lines = input_.get_lines(file_)
 
 class Solve(part1.Solve):
     _bags = []
+    count = 0
 
     def __init__(self):
         super(part1.Solve, self).__init__()
 
-    def get_children_for_bag(self, bag):
-        children = []
+    def get_total_bags_from_bag(self, bag):
+        totals = []
 
-        def get_children(self, child_bag):
-            for b in self._bags:
-                if child_bag in b.parents:
-                    children.append(b)
-                    get_children(self, b)
+        def get_totals(bag, subtotals):
+            mult = 1
+            if any(subtotals):
+                mult = subtotals[-1]
+            for b, count in bag.children.items():
+                subtotals.append(int(count) * mult)
+                get_totals(b, subtotals)
+            return subtotals
 
-        get_children(self, bag)
-        return list(children)
+        totals = get_totals(bag, totals)
+        return sum(totals)
 
     def how_many_children(self):
         self.parse_rules(lines, rule_text=part1.CONTAIN_KEY)
         my_bag = self._bags_to_names[self.my_bag]
-        return self.get_children_for_bag(my_bag)
+        return self.get_total_bags_from_bag(my_bag)
 
 
 if __name__ == '__main__':
