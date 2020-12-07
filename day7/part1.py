@@ -70,7 +70,8 @@ class Bag:
         return self.name
 
     def __str__(self):
-        return f'{self.name}: ({self.children})'
+        # return f'{self.name}: (Children: {self.children})'
+        return f'{self.name}: (Parents: {self.parents})'
 
 
 class Solve:
@@ -123,9 +124,19 @@ class Solve:
         for p in parsed:
             bag, desc = p
             if bag in self._bags_to_names:
+                # Get children from description, keep count of how many potential children, too
                 children = self.get_children_from_desc(desc)
+
+                # Add children, to this bag
                 bag_object = self._bags_to_names[bag]
                 bag_object.children = children
+
+        # parent_names_of_children_dict = {k.name: [v.name for v in k.children] for k in self._bags}
+        # children_of_parents_dict = {}
+        #
+        # for parent, children in parent_names_of_children_dict.items():
+        #     for c in children:
+        #         print(c)
 
         return self._bags
 
