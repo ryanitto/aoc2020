@@ -111,6 +111,10 @@ instruction in the file. With this change, after the program terminates, the acc
 Fix the program so that it terminates normally by changing exactly one jmp (to nop) or nop (to jmp). What is the
 value of the accumulator after the program terminates?
 
+Your puzzle answer was 833.
+
+Both parts of this puzzle are complete! They provide two gold stars: **
+=================================================
 """
 import input_
 
@@ -120,6 +124,7 @@ lines = input_.get_lines(file_)
 
 class Instruction:
     can_switch = False
+    has_switched = False
 
     def __init__(self, *args, **kwargs):
         for k, v in kwargs:
@@ -128,9 +133,7 @@ class Instruction:
         if any(args):
             self.task = args[0]
             self.value, self.index = int(args[1]), int(args[2])
-
-            if self.task != 'acc':
-                self.can_switch = True
+            self.can_switch = True if self.task != 'acc' else False
 
     def __repr__(self):
         return f'{self.task} - (Value: {self.value}, Index: {self.index})'
@@ -147,6 +150,7 @@ class Instruction:
     def nop(self, *args, doing_switch=False):
         # If trying to switch, we need to to jmp instead.  Get outta here!
         if doing_switch:
+            self.has_switched = True
             return self.jmp(*args, doing_switch=False)
         # Otherwise, normally, return nop :)
         else:
@@ -156,16 +160,16 @@ class Instruction:
     def jmp(self, *args, doing_switch=False):
         # If trying to switch, we need to to nop instead.  Get outta here!
         if doing_switch:
+            self.has_switched = True
             return self.nop(*args, doing_switch=False)
         # Otherwise, normally, return jmp :)
         else:
-            return 0, sum(args)
+            next_index = sum(args)
+            return 0, next_index
 
 
 class Solve:
     _instructions = []
-    _completed_tasks = []
-    _iterate_index = 0
     accumulator = 0
 
     def __init__(self, **kwargs):
@@ -182,44 +186,36 @@ class Solve:
         return self._instructions
 
     def find_loop(self, switch_index):
-        # self.accumulator = 0
-        # self._completed_tasks = []
-        next_switch_index = self._iterate_index
+        completed_tasks = []
+        max_line = range(len(lines))[-1]
 
-        def iterate_task(self, index):
-            do_switch = switch_index == next_switch_index and self._instructions[index].can_switch is True
-            if do_switch:
-                self._iterate_index += 1
-            value, next_index = self._instructions[index].run_task(do_switch=do_switch)
+        def iterate_task(self, index, switch_attempt=False):
+            task = self._instructions[index]
+            do_switch = True if switch_attempt and not task.has_switched else False
+            value, next_index = task.run_task(do_switch=do_switch)
+
             value = int(value)
             next_index = int(next_index)
 
-            if index not in self._completed_tasks:
-                # print(self._instructions[index], value, next_index)
+            if index not in completed_tasks:
                 self.accumulator += value
-                print(self.accumulator)
-                self._completed_tasks.append(index)
-                iterate_task(self, next_index)
+                completed_tasks.append(index)
+                if index == max_line:
+                    return completed_tasks
+                return iterate_task(self, next_index, switch_attempt=do_switch)
+            return completed_tasks
 
-        iterate_task(self, switch_index)
-        return self.accumulator, max(self._completed_tasks)
+        while max_line not in completed_tasks:
+            iterate_task(self, switch_index, switch_attempt=True)
+            print(max_line, completed_tasks, '<----')
 
     def find_loops(self):
-        switch_index = 0
-        max_index = self.find_loop(switch_index)[1]
-        max_line = range(len(lines))[-1]
-        return max_index, max_line
-        # while max_index != max_line or switch_index < 1:
-        # while switch_index < 30 and max_index != max_line:
-        #     switch_index += 1
-        #     acc, max_index = self.find_loop(switch_index)
-        #     if max_index == max_line:
-        #         return acc
+        print(self.find_loop(0))
 
     def go(self):
         self.parse_instructions(lines)
-        return self.find_loops()
-        # return self.accumulator
+        self.find_loops()
+        return self.accumulator
 
 
 if __name__ == '__main__':
